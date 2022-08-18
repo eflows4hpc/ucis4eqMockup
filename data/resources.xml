@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ResourcesList>
+
+	<Http BaseUrl="http://127.0.0.1:5000/">
+		<ServiceName>microservices</ServiceName>
+	</Http>
+
+	<Http BaseUrl="http://127.0.0.1:5003/">
+		<ServiceName>simulator</ServiceName>
+	</Http>
+  
+  <Http BaseUrl="http://127.0.0.1:5002/">
+		<ServiceName>sourcebuilding</ServiceName>
+	</Http>
+
+</ResourcesList>

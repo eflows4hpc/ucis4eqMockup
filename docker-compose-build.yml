@@ -1,0 +1,49 @@
+###
+###   Docker file for the ucis4eq services
+###
+version: '3.7'
+
+services:
+  
+  # UCIS4EQ Base
+  base:
+    image: eflows/ucis4eq/base     
+    build: 
+      context: .      
+      dockerfile: deployment/dockers/Dockerfile-base  
+      
+  # UCIS4EQ Micro services      
+  microservices:
+    image: eflows/ucis4eq/microservices     
+    build: 
+      context: .      
+      dockerfile: deployment/dockers/Dockerfile-microServices   
+    depends_on:
+      - base
+
+  # UCIS4EQ Workflow manager services    
+  workflowmanager:
+    image: eflows/ucis4eq/workflowmanager     
+    build: 
+      context: .      
+      dockerfile: deployment/dockers/Dockerfile-workflowManager 
+    depends_on:
+      - base
+      
+  # UCIS4EQ Salvus service
+  simulator:
+    image: eflows/ucis4eq/simulator     
+    build: 
+      context: .      
+      dockerfile: deployment/dockers/Dockerfile-simulatorServices      
+    depends_on:
+      - base
+      
+  # UCIS4EQ Slipgen service
+  sourcebuilding:
+    image: eflows/ucis4eq/sourcebuilding     
+    build: 
+      context: .      
+      dockerfile: deployment/dockers/Dockerfile-sourceBuilding  
+
+            

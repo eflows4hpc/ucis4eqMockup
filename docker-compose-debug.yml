@@ -1,0 +1,58 @@
+###
+###   Docker file for the ucis4eq services
+###
+version: '3'
+
+services:
+  # UCIS4EQ Slip Generator service  
+  sourcebuilding:
+    image: eflows/ucis4eq/sourcebuilding        
+    network_mode: "host"
+    environment:
+      - PYTHONUNBUFFERED=1        
+    volumes:
+      - ./data/Sites.json:/opt/Sites.json
+      - ./code/services/sourceBuildingService.py:/opt/services/sourceBuildingService.py
+      - ./code/components/:/usr/local/lib/python3.7/dist-packages/ucis4eq
+
+    entrypoint: ["/bin/bash", "/opt/services/start.sh"]
+
+  # UCIS4EQ Simulator
+  simulator:
+    image: eflows/ucis4eq/simulator         
+    network_mode: "host"
+    environment:
+      - PYTHONUNBUFFERED=1    
+    volumes:
+      - ./data/Sites.json:/opt/Sites.json      
+      - ./code/services/simulatorService.py:/opt/services/simulatorService.py
+      - ./code/components/:/usr/local/lib/python3.8/site-packages/ucis4eq
+    entrypoint: ["/bin/bash", "/opt/services/start.sh"]
+      
+  # UCIS4EQ Micro-services 
+  microservices:
+    image: eflows/ucis4eq/microservices
+    network_mode: "host"
+    environment:
+      - PYTHONUNBUFFERED=1    
+    volumes:
+      - ./data/Sites.json:/opt/Sites.json      
+      - ./code/components/:/usr/local/lib/python3.8/site-packages/ucis4eq
+      - ./code/services/microServices.py:/root/services/microServices.py
+  
+  # UCIS4EQ Workflow Manager service  
+  workflowmanager:
+    image: eflows/ucis4eq/workflowmanager
+    network_mode: "host"
+    environment:
+      - UCIS4EQ_LOCATION=${LOCATION}
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./data/project.xml:/opt/project.xml
+      - ./data/resources.xml:/opt/resources.xml          
+      - ./code/components/:/usr/local/lib/python3.8/site-packages/ucis4eq
+      - ./code/services/workflowManagerService.py:/root/services/workflowManagerService.py      
+      - ./data/resources.xml:/usr/local/lib/python3.8/site-packages/pycompss/COMPSs/Runtime/configuration/xml/resources/default_resources.xml
+      - ./data/project.xml:/usr/local/lib/python3.8/site-packages/pycompss/COMPSs/Runtime/configuration/xml/projects/default_project.xml
+      - ./results/pycompss:/root/.COMPSs/
+    

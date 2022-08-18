@@ -1,0 +1,43 @@
+###
+###   Docker file for the ucis4eq services
+###
+version: '3.7'
+
+services:
+  # UCIS4EQ Slip Generator service  
+  sourcebuilding:
+    image: eflows/ucis4eq/sourcebuilding        
+    network_mode: "host"
+    volumes:
+      - ./data/Sites.json:/opt/Sites.json      
+
+    entrypoint: ["/bin/bash", "/opt/services/start.sh"]
+    restart: always    
+
+  # UCIS4EQ Salvus
+  simulator:
+    image: eflows/ucis4eq/simulator        
+    network_mode: "host"
+    volumes:
+      - ./data/Sites.json:/opt/Sites.json            
+    entrypoint: ["/bin/bash", "/opt/services/start.sh"]
+    restart: always       
+      
+  # UCIS4EQ Micro-services 
+  microservices:
+    image: eflows/ucis4eq/microservices
+    network_mode: "host"
+    volumes:
+      - ./data/Sites.json:/opt/Sites.json    
+    restart: always        
+  
+  # UCIS4EQ Workflow Manager service  
+  workflowsanager:
+    image: eflows/ucis4eq/workflowmanager
+    environment:
+      - UCIS4EQ_LOCATION=${LOCATION}
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./data/project.xml:/opt/project.xml
+      - ./data/resources.xml:/opt/resources.xml
