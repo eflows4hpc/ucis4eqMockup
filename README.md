@@ -62,7 +62,13 @@ Clone the project and follow the instructions
 From working directory:
 
 ### 1 - Start the UCIS4EQ System
-Open a terminal and then, run:
+Open a terminal and run:
+
+```
+docker-compose -f docker-compose-build.yml build
+```
+
+and then:
 
 ```
 docker-compose up 
