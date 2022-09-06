@@ -32,9 +32,6 @@ RUN pip3 install numpy scipy obspy --no-cache-dir
 #RUN pip3 install numpy --no-cache-dir
 RUN pip3 install flask pymongo requests; pip3 install webdavclient3 
 
-# Copy and decompress the slip generator code into /opt directory
-ADD deployment/dockers/thirdparties/gp-slip-gen.tar.gz /opt/
-
 # Prepare the service to run
 RUN mkdir /opt/services;
 
